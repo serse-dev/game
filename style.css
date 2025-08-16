@@ -1,87 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Emoji Memory Match</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background-color: #fffde7;
-      text-align: center;
-      padding: 20px;
-    }
-    .board {
-      display: grid;
-      grid-template-columns: repeat(4, 80px);
-      grid-gap: 10px;
-      justify-content: center;
-      margin-top: 20px;
-    }
-    .card {
-      width: 80px;
-      height: 80px;
-      font-size: 32px;
-      background-color: #ffe0b2;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      user-select: none;
-    }
-    .matched {
-      background-color: #a5d6a7;
-      cursor: default;
-    }
-  </style>
-</head>
-<body>
-  <h1>🧠 Emoji Memory Match</h1>
-  <p>Score: <span id="score">0</span></p>
-  <div class="board" id="board"></div>
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #f0f0f0;
+}
 
-  <script>
-    const emojis = ['🍎', '🚀', '🐶', '🎵', '🌈', '⚽️'];
-    let cards = [...emojis, ...emojis];
-    let firstCard = null;
-    let lock = false;
-    let score = 0;
+#target {
+  width: 40px;
+  height: 40px;
+  background-color: #9ccc65;
+  border-radius: 50%;
+  position: absolute;
+  cursor: pointer;
+  animation: move 2s infinite linear;
+}
 
-    cards = cards.sort(() => Math.random() - 0.5);
-    const board = document.getElementById("board");
-
-    cards.forEach((emoji, index) => {
-      const card = document.createElement("div");
-      card.classList.add("card");
-      card.dataset.index = index;
-      card.textContent = "❓";
-      board.appendChild(card);
-
-      card.addEventListener("click", () => {
-        if (lock || card.classList.contains("matched")) return;
-
-        card.textContent = emoji;
-
-        if (!firstCard) {
-          firstCard = card;
-        } else {
-          lock = true;
-          setTimeout(() => {
-            if (firstCard.textContent === card.textContent && firstCard !== card) {
-              firstCard.classList.add("matched");
-              card.classList.add("matched");
-              score++;
-              document.getElementById("score").textContent = score;
-            } else {
-              firstCard.textContent = "❓";
-              card.textContent = "❓";
-            }
-            firstCard = null;
-            lock = false;
-          }, 800);
-        }
-      });
-    });
-  </script>
-</body>
-</html>
+@keyframes move {
+  0%   { top: 10%; left: 10%; }
+  25%  { top: 10%; left: 80%; }
+  50%  { top: 80%; left: 80%; }
+  75%  { top: 80%; left: 10%; }
+  100% { top: 10%; left: 10%; }
+}
